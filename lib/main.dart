@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,138 +10,151 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: TicTacToePage(
+        player1Name: 'Pippo',
+        player2Name: 'Topolino',
+      ),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class TicTacToePage extends StatefulWidget {
+  const TicTacToePage({
+    required this.player1Name,
+    required this.player2Name,
+    super.key,
+  });
+
+  final String player1Name;
+  final String player2Name;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TicTacToePage> createState() => _TicTacToePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  bool oTurn = true;
-  int oScore = 0;
-  int xScore = 0;
+class _TicTacToePageState extends State<TicTacToePage> {
+  late Player player1;
+  late Player player2;
+  bool isPlayer1Turn = true;
+  int player1Score = 0;
+  int player2Score = 0;
   List<String> displayElement = ['', '', '', '', '', '', '', '', ''];
   int filledBoxes = 0;
+
+  @override
+  void initState() {
+    player1 = Player(name: widget.player1Name, sign: 'X');
+    player2 = Player(name: widget.player2Name, sign: 'O');
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tic Tac Toe'),
+        title: const Text('Tic Tac Toe'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Text(
-                    'Player X',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(30),
+                child: Text(
+                  player1.name,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  "= $xScore",
-                  style: TextStyle(
+              ),
+              Text(
+                "= $player1Score",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(30),
+                child: Text(
+                  player2.name,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Text(
-                    'Player 0',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              ),
+              Text(
+                "= $player2Score",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  "= $oScore",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 4,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[0]),
-                      onTap: () => _tapped(0),
-                    ),
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[1]),
-                      onTap: () => _tapped(1),
-                    ),
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[2]),
-                      onTap: () => _tapped(2),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[3]),
-                      onTap: () => _tapped(3),
-                    ),
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[4]),
-                      onTap: () => _tapped(4),
-                    ),
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[5]),
-                      onTap: () => _tapped(5),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[6]),
-                      onTap: () => _tapped(6),
-                    ),
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[7]),
-                      onTap: () => _tapped(7),
-                    ),
-                    GestureDetector(
-                      child: TicTacToeBox(element: displayElement[8]),
-                      onTap: () => _tapped(8),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[0]),
+                onTap: () => _tapped(0),
+              ),
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[1]),
+                onTap: () => _tapped(1),
+              ),
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[2]),
+                onTap: () => _tapped(2),
+              ),
+            ],
           ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _clearScoreBoard,
-                  child: const Text("Clear Score Board"),
-                )
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[3]),
+                onTap: () => _tapped(3),
+              ),
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[4]),
+                onTap: () => _tapped(4),
+              ),
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[5]),
+                onTap: () => _tapped(5),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[6]),
+                onTap: () => _tapped(6),
+              ),
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[7]),
+                onTap: () => _tapped(7),
+              ),
+              GestureDetector(
+                child: TicTacToeBox(element: displayElement[8]),
+                onTap: () => _tapped(8),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: _clearBoard,
+            child: const Text("Clear Board"),
+          ),
+          ElevatedButton(
+            onPressed: _clearScore,
+            child: const Text("Clear Score"),
           ),
         ],
       ),
@@ -150,14 +163,15 @@ class _HomePageState extends State<HomePage> {
 
   void _tapped(int index) {
     setState(() {
-      if (oTurn && displayElement[index] == '') {
-        displayElement[index] = 'O';
+      if (isPlayer1Turn && displayElement[index] == '') {
+        displayElement[index] = player1.sign;
         filledBoxes++;
-      } else if (!oTurn && displayElement[index] == '') {
-        displayElement[index] = 'X';
+      } else if (!isPlayer1Turn && displayElement[index] == '') {
+        displayElement[index] = player2.sign;
         filledBoxes++;
       }
-      oTurn = !oTurn;
+
+      isPlayer1Turn = !isPlayer1Turn;
       _checkWinner();
     });
   }
@@ -225,10 +239,8 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  void _clearScoreBoard() {
+  void _clearBoard() {
     setState(() {
-      xScore = 0;
-      oScore = 0;
       for (int i = 0; i < 9; i++) {
         displayElement[i] = '';
       }
@@ -236,13 +248,24 @@ class _HomePageState extends State<HomePage> {
     filledBoxes = 0;
   }
 
-  void _showWinDialog(String winner) {
+  void _clearScore() {
+    _clearBoard();
+
+    setState(() {
+      player2Score = 0;
+      player1Score = 0;
+    });
+  }
+
+  void _showWinDialog(String winnerSign) {
+    String winnerName =
+        winnerSign == player1.sign ? player1.name : player2.name;
     showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("\" $winner\" is winner!!!"),
+            title: Text("$winnerName ($winnerSign) is winner!!!"),
             actions: [
               OutlinedButton(
                   onPressed: () {
@@ -252,10 +275,10 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         });
-    if (winner == 'O') {
-      oScore++;
-    } else if (winner == 'X') {
-      xScore++;
+    if (winnerSign == player1.sign) {
+      player1Score++;
+    } else if (winnerSign == player2.sign) {
+      player2Score++;
     }
   }
 }
@@ -271,6 +294,8 @@ class TicTacToeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 100,
+      height: 100,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.black,
@@ -284,4 +309,14 @@ class TicTacToeBox extends StatelessWidget {
       ),
     );
   }
+}
+
+class Player {
+  const Player({
+    required this.name,
+    required this.sign,
+  });
+
+  final String name;
+  final String sign;
 }
