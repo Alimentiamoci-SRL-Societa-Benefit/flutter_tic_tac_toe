@@ -8,18 +8,84 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static const Color seedColor = Color(0xFF668A2D);
+  static const Color textColor = Color(0xFF385A11);
+  static const Color onSeedColor = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFFFFFF),
+          seedColor: seedColor,
+          onPrimary: onSeedColor,
+        ),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(color: textColor),
+          bodyLarge: TextStyle(color: textColor),
+          displaySmall: TextStyle(color: textColor),
         ),
       ),
-      home: const TicTacToePage(
-        player1Name: 'Pippo',
-        player2Name: 'Topolino',
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController player1Controller = TextEditingController();
+  final TextEditingController player2Controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Tic Tac Toe',
+                  style: Theme.of(context).textTheme.displaySmall),
+              const SizedBox(height: 30),
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: 'Giocatore 1',
+                    labelStyle: Theme.of(context).textTheme.bodyMedium),
+                controller: player1Controller,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Giocatore 2',
+                  labelStyle: Theme.of(context).textTheme.bodyMedium,
+                ),
+                controller: player2Controller,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+                    builder: (context) => TicTacToePage(
+                      player1Name: player1Controller.value.text,
+                      player2Name: player2Controller.value.text,
+                    ),
+                  ));
+                },
+                child: const Text('Inizia la partita!'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -57,10 +123,12 @@ class _TicTacToePageState extends State<TicTacToePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Tic Tac Toe',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
@@ -147,9 +215,9 @@ class _TicTacToePageState extends State<TicTacToePage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
             ),
-            child: const Text(
+            child: Text(
               "Pulisci board",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
           const SizedBox(height: 20),
