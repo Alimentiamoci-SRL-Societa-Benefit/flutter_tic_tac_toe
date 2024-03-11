@@ -38,8 +38,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
   late Player player1;
   late Player player2;
   bool isPlayer1Turn = true;
-  List<String> displayElement = ['', '', '', '', '', '', '', '', ''];
-  int filledBoxes = 0;
+  GameBoard board = GameBoard();
 
   @override
   void initState() {
@@ -99,15 +98,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[0]),
+                child: TicTacToeBox(element: board.elementAt(0)),
                 onTap: () => _tapped(0),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[1]),
+                child: TicTacToeBox(element: board.elementAt(1)),
                 onTap: () => _tapped(1),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[2]),
+                child: TicTacToeBox(element: board.elementAt(2)),
                 onTap: () => _tapped(2),
               ),
             ],
@@ -116,15 +115,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[3]),
+                child: TicTacToeBox(element: board.elementAt(3)),
                 onTap: () => _tapped(3),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[4]),
+                child: TicTacToeBox(element: board.elementAt(4)),
                 onTap: () => _tapped(4),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[5]),
+                child: TicTacToeBox(element: board.elementAt(5)),
                 onTap: () => _tapped(5),
               ),
             ],
@@ -133,15 +132,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[6]),
+                child: TicTacToeBox(element: board.elementAt(6)),
                 onTap: () => _tapped(6),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[7]),
+                child: TicTacToeBox(element: board.elementAt(7)),
                 onTap: () => _tapped(7),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: displayElement[8]),
+                child: TicTacToeBox(element: board.elementAt(8)),
                 onTap: () => _tapped(8),
               ),
             ],
@@ -161,67 +160,23 @@ class _TicTacToePageState extends State<TicTacToePage> {
 
   void _tapped(int index) {
     setState(() {
-      if (displayElement[index] != '') {
+      final currentPlayer = isPlayer1Turn ? player1 : player2;
+
+      if (!board.set(player: currentPlayer, index: index)) {
+        return;
+      }
+      isPlayer1Turn = !isPlayer1Turn;
+
+      if (board.playerHasWon(currentPlayer)) {
+        _showWinDialog(currentPlayer);
+        currentPlayer.score++;
         return;
       }
 
-      displayElement[index] = isPlayer1Turn ? player1.sign : player2.sign;
-      filledBoxes++;
-      isPlayer1Turn = !isPlayer1Turn;
-      _checkWinner();
+      if (board.isBoardFull()) {
+        _showDrawDialog();
+      }
     });
-  }
-
-  void _checkWinner() {
-    if (displayElement[0] == displayElement[1] &&
-        displayElement[0] == displayElement[2] &&
-        displayElement[0] != '') {
-      _showWinDialog(displayElement[0]);
-      return;
-    }
-    if (displayElement[3] == displayElement[4] &&
-        displayElement[3] == displayElement[5] &&
-        displayElement[3] != '') {
-      _showWinDialog(displayElement[3]);
-      return;
-    }
-    if (displayElement[6] == displayElement[7] &&
-        displayElement[6] == displayElement[8] &&
-        displayElement[6] != '') {
-      _showWinDialog(displayElement[6]);
-    }
-    if (displayElement[0] == displayElement[3] &&
-        displayElement[0] == displayElement[6] &&
-        displayElement[0] != '') {
-      _showWinDialog(displayElement[0]);
-      return;
-    }
-    if (displayElement[1] == displayElement[4] &&
-        displayElement[1] == displayElement[7] &&
-        displayElement[1] != '') {
-      _showWinDialog(displayElement[1]);
-      return;
-    }
-    if (displayElement[2] == displayElement[5] &&
-        displayElement[2] == displayElement[8] &&
-        displayElement[2] != '') {
-      _showWinDialog(displayElement[2]);
-    }
-    if (displayElement[0] == displayElement[4] &&
-        displayElement[0] == displayElement[8] &&
-        displayElement[0] != '') {
-      _showWinDialog(displayElement[0]);
-      return;
-    }
-    if (displayElement[2] == displayElement[4] &&
-        displayElement[2] == displayElement[6] &&
-        displayElement[2] != '') {
-      _showWinDialog(displayElement[2]);
-      return;
-    }
-    if (filledBoxes == 9) {
-      _showDrawDialog();
-    }
   }
 
   void _showDrawDialog() {
@@ -242,33 +197,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
         });
   }
 
-  void _clearBoard() {
-    setState(() {
-      for (int i = 0; i < 9; i++) {
-        displayElement[i] = '';
-      }
-    });
-    filledBoxes = 0;
-  }
-
-  void _startNewGame() {
-    _clearBoard();
-
-    setState(() {
-      player1.score = 0;
-      player2.score = 0;
-    });
-  }
-
-  void _showWinDialog(String winnerSign) {
-    String winnerName =
-        winnerSign == player1.sign ? player1.name : player2.name;
+  void _showWinDialog(Player winner) {
     showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("$winnerName ($winnerSign) ha vinto!!!"),
+            title: Text("${winner.name} (${winner.sign}) ha vinto!!!"),
             actions: [
               OutlinedButton(
                   onPressed: () {
@@ -278,11 +213,21 @@ class _TicTacToePageState extends State<TicTacToePage> {
             ],
           );
         });
-    if (winnerSign == player1.sign) {
-      player1.score++;
-    } else if (winnerSign == player2.sign) {
-      player2.score++;
-    }
+  }
+
+  void _clearBoard() {
+    setState(() {
+      board.clear();
+    });
+  }
+
+  void _startNewGame() {
+    _clearBoard();
+
+    setState(() {
+      player1.score = 0;
+      player2.score = 0;
+    });
   }
 }
 
@@ -324,4 +269,63 @@ class Player {
   final String name;
   final String sign;
   int score;
+}
+
+class GameBoard {
+  GameBoard();
+
+  List<String> board = ['', '', '', '', '', '', '', '', ''];
+
+  String elementAt(int index) {
+    return board[index];
+  }
+
+  bool set({required Player player, required int index}) {
+    if (board[index] != '') {
+      return false;
+    }
+    board[index] = player.sign;
+    return true;
+  }
+
+  void clear() {
+    for (var i = 0; i < board.length; i++) {
+      board[i] = '';
+    }
+  }
+
+  bool playerHasWon(Player player) {
+    final sign = player.sign;
+
+    if (board[0] == board[1] && board[0] == board[2] && board[0] == sign) {
+      return true;
+    }
+    if (board[3] == board[4] && board[3] == board[5] && board[3] == sign) {
+      return true;
+    }
+    if (board[6] == board[7] && board[6] == board[8] && board[6] == sign) {
+      return true;
+    }
+    if (board[0] == board[3] && board[0] == board[6] && board[0] == sign) {
+      return true;
+    }
+    if (board[1] == board[4] && board[1] == board[7] && board[1] == sign) {
+      return true;
+    }
+    if (board[2] == board[5] && board[2] == board[8] && board[2] == sign) {
+      return true;
+    }
+    if (board[0] == board[4] && board[0] == board[8] && board[0] == sign) {
+      return true;
+    }
+    if (board[2] == board[4] && board[2] == board[6] && board[2] == sign) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool isBoardFull() {
+    return board.every((element) => element != '');
+  }
 }
