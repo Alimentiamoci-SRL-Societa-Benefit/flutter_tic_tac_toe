@@ -38,15 +38,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
   late Player player1;
   late Player player2;
   bool isPlayer1Turn = true;
-  int player1Score = 0;
-  int player2Score = 0;
   List<String> displayElement = ['', '', '', '', '', '', '', '', ''];
   int filledBoxes = 0;
 
   @override
   void initState() {
-    player1 = Player(name: widget.player1Name, sign: 'X');
-    player2 = Player(name: widget.player2Name, sign: 'O');
+    player1 = Player(name: widget.player1Name, sign: 'X', score: 0);
+    player2 = Player(name: widget.player2Name, sign: 'O', score: 0);
 
     super.initState();
   }
@@ -72,7 +70,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
                 ),
               ),
               Text(
-                "= $player1Score",
+                "= ${player1.score}",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -89,7 +87,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
                 ),
               ),
               Text(
-                "= $player2Score",
+                "= ${player2.score}",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -150,11 +148,11 @@ class _TicTacToePageState extends State<TicTacToePage> {
           ),
           ElevatedButton(
             onPressed: _clearBoard,
-            child: const Text("Clear Board"),
+            child: const Text("Pulisci board"),
           ),
           ElevatedButton(
-            onPressed: _clearScore,
-            child: const Text("Clear Score"),
+            onPressed: _startNewGame,
+            child: const Text("Nuova partita"),
           ),
         ],
       ),
@@ -253,12 +251,12 @@ class _TicTacToePageState extends State<TicTacToePage> {
     filledBoxes = 0;
   }
 
-  void _clearScore() {
+  void _startNewGame() {
     _clearBoard();
 
     setState(() {
-      player2Score = 0;
-      player1Score = 0;
+      player1.score = 0;
+      player2.score = 0;
     });
   }
 
@@ -281,9 +279,9 @@ class _TicTacToePageState extends State<TicTacToePage> {
           );
         });
     if (winnerSign == player1.sign) {
-      player1Score++;
+      player1.score++;
     } else if (winnerSign == player2.sign) {
-      player2Score++;
+      player2.score++;
     }
   }
 }
@@ -317,11 +315,13 @@ class TicTacToeBox extends StatelessWidget {
 }
 
 class Player {
-  const Player({
+  Player({
     required this.name,
     required this.sign,
+    this.score = 0,
   });
 
   final String name;
   final String sign;
+  int score;
 }
