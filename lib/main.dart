@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                 controller: player1Controller,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
+              const SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Giocatore 2',
@@ -71,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 controller: player2Controller,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute<void>(
