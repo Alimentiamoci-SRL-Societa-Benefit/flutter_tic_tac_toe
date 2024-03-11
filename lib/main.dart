@@ -179,11 +179,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
         displayElement[0] == displayElement[2] &&
         displayElement[0] != '') {
       _showWinDialog(displayElement[0]);
+      return;
     }
     if (displayElement[3] == displayElement[4] &&
         displayElement[3] == displayElement[5] &&
         displayElement[3] != '') {
       _showWinDialog(displayElement[3]);
+      return;
     }
     if (displayElement[6] == displayElement[7] &&
         displayElement[6] == displayElement[8] &&
@@ -194,11 +196,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
         displayElement[0] == displayElement[6] &&
         displayElement[0] != '') {
       _showWinDialog(displayElement[0]);
+      return;
     }
     if (displayElement[1] == displayElement[4] &&
         displayElement[1] == displayElement[7] &&
         displayElement[1] != '') {
       _showWinDialog(displayElement[1]);
+      return;
     }
     if (displayElement[2] == displayElement[5] &&
         displayElement[2] == displayElement[8] &&
@@ -209,12 +213,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
         displayElement[0] == displayElement[8] &&
         displayElement[0] != '') {
       _showWinDialog(displayElement[0]);
+      return;
     }
     if (displayElement[2] == displayElement[4] &&
         displayElement[2] == displayElement[6] &&
         displayElement[2] != '') {
       _showWinDialog(displayElement[2]);
-    } else if (filledBoxes == 9) {
+      return;
+    }
+    if (filledBoxes == 9) {
       _showDrawDialog();
     }
   }
@@ -225,13 +232,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Draw"),
+            title: const Text('Pareggio!'),
             actions: [
               OutlinedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Play Again'))
+                  child: const Text('Gioca ancora'))
             ],
           );
         });
@@ -263,13 +270,13 @@ class _TicTacToePageState extends State<TicTacToePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("$winnerName ($winnerSign) is winner!!!"),
+            title: Text("$winnerName ($winnerSign) ha vinto!!!"),
             actions: [
               OutlinedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Play Again'))
+                  child: const Text('Gioca ancora'))
             ],
           );
         });
