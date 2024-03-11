@@ -10,9 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TicTacToePage(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFFFFFFF),
+        ),
+      ),
+      home: const TicTacToePage(
         player1Name: 'Pippo',
         player2Name: 'Topolino',
       ),
@@ -52,47 +57,38 @@ class _TicTacToePageState extends State<TicTacToePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tic Tac Toe'),
+        title: const Text(
+          'Tic Tac Toe',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Text(
-                  player1.name,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Text(
-                "= ${player1.score}",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Text(
-                  player2.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "(${player1.sign}) ${player1.name}: ${player1.score}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight:
+                        isPlayer1Turn ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
-              ),
-              Text(
-                "= ${player2.score}",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  "(${player2.sign}) ${player2.name}: ${player2.score}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight:
+                        !isPlayer1Turn ? FontWeight.bold : FontWeight.normal,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -145,10 +141,18 @@ class _TicTacToePageState extends State<TicTacToePage> {
               ),
             ],
           ),
+          const SizedBox(height: 36),
           ElevatedButton(
             onPressed: _clearBoard,
-            child: const Text("Pulisci board"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            child: const Text(
+              "Pulisci board",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _startNewGame,
             child: const Text("Nuova partita"),
@@ -244,15 +248,11 @@ class TicTacToeBox extends StatelessWidget {
     return Container(
       width: 100,
       height: 100,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black,
-        ),
-      ),
+      decoration: BoxDecoration(border: Border.all()),
       child: Center(
         child: Text(
           element,
-          style: const TextStyle(color: Colors.black, fontSize: 35),
+          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 35),
         ),
       ),
     );
