@@ -163,14 +163,12 @@ class _TicTacToePageState extends State<TicTacToePage> {
 
   void _tapped(int index) {
     setState(() {
-      if (isPlayer1Turn && displayElement[index] == '') {
-        displayElement[index] = player1.sign;
-        filledBoxes++;
-      } else if (!isPlayer1Turn && displayElement[index] == '') {
-        displayElement[index] = player2.sign;
-        filledBoxes++;
+      if (displayElement[index] != '') {
+        return;
       }
 
+      displayElement[index] = isPlayer1Turn ? player1.sign : player2.sign;
+      filledBoxes++;
       isPlayer1Turn = !isPlayer1Turn;
       _checkWinner();
     });
