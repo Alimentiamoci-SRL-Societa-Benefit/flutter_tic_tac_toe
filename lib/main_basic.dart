@@ -60,8 +60,22 @@ class _TicTacToeState extends State<TicTacToePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('(${player1.sign}) ${player1.name}: ${player1.score}'),
-              Text('(${player2.sign}) ${player2.name}: ${player2.score}'),
+              Text(
+                '(${player1.sign}) ${player1.name}: ${player1.score}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight:
+                      isPlayer1Turn ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              Text(
+                '(${player2.sign}) ${player2.name}: ${player2.score}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight:
+                      !isPlayer1Turn ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
             ],
           ),
         ),
