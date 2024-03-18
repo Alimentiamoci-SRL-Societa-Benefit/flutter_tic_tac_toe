@@ -53,13 +53,16 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Tic Tac Toe',
-                  style: Theme.of(context).textTheme.displaySmall),
+              Text(
+                'Tic Tac Toe',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
               const SizedBox(height: 30),
               TextFormField(
                 decoration: InputDecoration(
-                    labelText: 'Giocatore 1',
-                    labelStyle: Theme.of(context).textTheme.bodyMedium),
+                  labelText: 'Giocatore 1',
+                  labelStyle: Theme.of(context).textTheme.bodyMedium,
+                ),
                 controller: player1Controller,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
@@ -75,14 +78,24 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute<void>(
-                    builder: (context) => TicTacToePage(
-                      player1Name: player1Controller.value.text,
-                      player2Name: player2Controller.value.text,
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (context) => TicTacToePage(
+                        player1Name: player1Controller.value.text,
+                        player2Name: player2Controller.value.text,
+                      ),
                     ),
-                  ));
+                  );
                 },
-                child: const Text('Inizia la partita!'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+                child: Text(
+                  'Inizia la partita!',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
               ),
             ],
           ),
@@ -128,8 +141,9 @@ class _TicTacToePageState extends State<TicTacToePage> {
           'Tic Tac Toe',
           style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
-        iconTheme:
-            IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
@@ -163,15 +177,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(0)),
+                child: TicTacToeBox(element: board.get(0)),
                 onTap: () => _tapped(0),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(1)),
+                child: TicTacToeBox(element: board.get(1)),
                 onTap: () => _tapped(1),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(2)),
+                child: TicTacToeBox(element: board.get(2)),
                 onTap: () => _tapped(2),
               ),
             ],
@@ -180,15 +194,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(3)),
+                child: TicTacToeBox(element: board.get(3)),
                 onTap: () => _tapped(3),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(4)),
+                child: TicTacToeBox(element: board.get(4)),
                 onTap: () => _tapped(4),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(5)),
+                child: TicTacToeBox(element: board.get(5)),
                 onTap: () => _tapped(5),
               ),
             ],
@@ -197,15 +211,15 @@ class _TicTacToePageState extends State<TicTacToePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(6)),
+                child: TicTacToeBox(element: board.get(6)),
                 onTap: () => _tapped(6),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(7)),
+                child: TicTacToeBox(element: board.get(7)),
                 onTap: () => _tapped(7),
               ),
               GestureDetector(
-                child: TicTacToeBox(element: board.elementAt(8)),
+                child: TicTacToeBox(element: board.get(8)),
                 onTap: () => _tapped(8),
               ),
             ],
@@ -345,7 +359,7 @@ class GameBoard {
 
   List<String> board = ['', '', '', '', '', '', '', '', ''];
 
-  String elementAt(int index) {
+  String get(int index) {
     return board[index];
   }
 
