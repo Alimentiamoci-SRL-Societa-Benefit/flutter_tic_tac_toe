@@ -177,6 +177,10 @@ class _TicTacToeState extends State<TicTacToePage> {
         _showWinDialog(currentPlayer);
         return;
       }
+
+      if (board.isBoardFull()) {
+        _showDrawDialog();
+      }
     });
   }
 
@@ -193,6 +197,24 @@ class _TicTacToeState extends State<TicTacToePage> {
         ],
       ),
     );
+  }
+
+  void _showDrawDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Pareggio!'),
+            actions: [
+              OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Gioca ancora'))
+            ],
+          );
+        });
   }
 
   void _startNewGame() {
@@ -286,5 +308,9 @@ class GameBoard {
     }
 
     return false;
+  }
+
+  bool isBoardFull() {
+    return board.every((element) => element != '');
   }
 }
