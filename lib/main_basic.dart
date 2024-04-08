@@ -137,6 +137,10 @@ class _TicTacToeState extends State<TicTacToePage> {
           }),
           child: const Text('Pulisci board'),
         ),
+        ElevatedButton(
+          onPressed: _startNewGame,
+          child: const Text('Nuova Partita'),
+        ),
       ]),
     );
   }
@@ -172,6 +176,14 @@ class _TicTacToeState extends State<TicTacToePage> {
         ],
       ),
     );
+  }
+
+  void _startNewGame() {
+    setState(() {
+      board.clear();
+      player1.score = 0;
+      player2.score = 0;
+    });
   }
 }
 
