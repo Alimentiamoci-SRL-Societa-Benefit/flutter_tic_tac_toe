@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Tic Tac Toe'),
+          title: Text('Tic Tac Toe'),
         ),
         body: TicTacToePage(),
       ),
@@ -39,7 +39,7 @@ class TicTacToeState extends State<TicTacToePage> {
 }
 
 class PlayerTurnWidget extends StatelessWidget {
-  const PlayerTurnWidget({
+  PlayerTurnWidget({
     required this.currentPlayer,
   });
 

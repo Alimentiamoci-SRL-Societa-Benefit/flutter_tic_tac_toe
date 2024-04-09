@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Tic Tac Toe'),
+          title: Text('Tic Tac Toe'),
         ),
         body: TicTacToePage(),
       ),
@@ -39,6 +39,17 @@ class TicTacToeState extends State<TicTacToePage> {
 
   Player? get winnerPlayer {
     return board.getWinningPlayer(player1: player1, player2: player2);
+  }
+
+  void handleTap(int index) {
+    if (board.get(index) != '' || winnerPlayer != null) {
+      return;
+    }
+
+    setState(() {
+      board.set(player: currentPlayer, index: index);
+      isPlayer1Turn = !isPlayer1Turn;
+    });
   }
 
   @override
@@ -77,21 +88,10 @@ class TicTacToeState extends State<TicTacToePage> {
       ],
     );
   }
-
-  void handleTap(int index) {
-    if (board.get(index) != '' || winnerPlayer != null) {
-      return;
-    }
-
-    setState(() {
-      board.set(player: currentPlayer, index: index);
-      isPlayer1Turn = !isPlayer1Turn;
-    });
-  }
 }
 
 class PlayerTurnWidget extends StatelessWidget {
-  const PlayerTurnWidget({required this.currentPlayer});
+  PlayerTurnWidget({required this.currentPlayer});
 
   final Player currentPlayer;
 
@@ -106,7 +106,7 @@ class PlayerTurnWidget extends StatelessWidget {
 }
 
 class WinnerPlayerWidget extends StatelessWidget {
-  const WinnerPlayerWidget({required this.winner});
+  WinnerPlayerWidget({required this.winner});
 
   final Player winner;
 
@@ -122,10 +122,9 @@ class WinnerPlayerWidget extends StatelessWidget {
 }
 
 class TicTacToeBox extends StatelessWidget {
-  const TicTacToeBox({
+  TicTacToeBox({
     required this.sign,
     required this.onTap,
-    super.key,
   });
 
   final String sign;

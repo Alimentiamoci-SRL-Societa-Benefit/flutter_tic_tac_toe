@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Tic Tac Toe'),
+          title: Text('Tic Tac Toe'),
         ),
         body: TicTacToePage(),
       ),
@@ -35,6 +35,17 @@ class TicTacToeState extends State<TicTacToePage> {
 
   Player get currentPlayer {
     return isPlayer1Turn ? player1 : player2;
+  }
+
+  void handleTap(int index) {
+    if (board.get(index) != '') {
+      return;
+    }
+
+    setState(() {
+      board.set(player: currentPlayer, index: index);
+      isPlayer1Turn = !isPlayer1Turn;
+    });
   }
 
   @override
@@ -71,21 +82,10 @@ class TicTacToeState extends State<TicTacToePage> {
       ],
     );
   }
-
-  void handleTap(int index) {
-    if (board.get(index) != '') {
-      return;
-    }
-
-    setState(() {
-      board.set(player: currentPlayer, index: index);
-      isPlayer1Turn = !isPlayer1Turn;
-    });
-  }
 }
 
 class PlayerTurnWidget extends StatelessWidget {
-  const PlayerTurnWidget({
+  PlayerTurnWidget({
     required this.currentPlayer,
   });
 
@@ -102,10 +102,9 @@ class PlayerTurnWidget extends StatelessWidget {
 }
 
 class TicTacToeBox extends StatelessWidget {
-  const TicTacToeBox({
+  TicTacToeBox({
     required this.sign,
     required this.onTap,
-    super.key,
   });
 
   final String sign;

@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage();
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                 'Tic Tac Toe',
                 style: Theme.of(context).textTheme.displaySmall,
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Giocatore 1',
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 controller: player1Controller,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Giocatore 2',
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                 controller: player2Controller,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class TicTacToePage extends StatefulWidget {
-  const TicTacToePage({
+  TicTacToePage({
     required this.player1Name,
     required this.player2Name,
   });
@@ -134,6 +134,24 @@ class TicTacToeState extends State<TicTacToePage> {
 
   Player? get winnerPlayer {
     return board.getWinningPlayer(player1: player1, player2: player2);
+  }
+
+  void handleTap(int index) {
+    if (board.get(index) != '' || winnerPlayer != null) {
+      return;
+    }
+
+    setState(() {
+      board.set(player: currentPlayer, index: index);
+      isPlayer1Turn = !isPlayer1Turn;
+    });
+  }
+
+  void startNewGame() {
+    setState(() {
+      board.clear();
+      isPlayer1Turn = true;
+    });
   }
 
   @override
@@ -177,37 +195,19 @@ class TicTacToeState extends State<TicTacToePage> {
               TicTacToeBox(sign: board.get(8), onTap: () => handleTap(8)),
             ],
           ),
-          const SizedBox(height: 36),
+          SizedBox(height: 36),
           ElevatedButton(
             onPressed: startNewGame,
-            child: const Text('Nuova partita'),
+            child: Text('Nuova partita'),
           ),
         ],
       ),
     );
   }
-
-  void handleTap(int index) {
-    if (board.get(index) != '' || winnerPlayer != null) {
-      return;
-    }
-
-    setState(() {
-      board.set(player: currentPlayer, index: index);
-      isPlayer1Turn = !isPlayer1Turn;
-    });
-  }
-
-  void startNewGame() {
-    setState(() {
-      board.clear();
-      isPlayer1Turn = true;
-    });
-  }
 }
 
 class PlayerTurnWidget extends StatelessWidget {
-  const PlayerTurnWidget({required this.currentPlayer});
+  PlayerTurnWidget({required this.currentPlayer});
 
   final Player currentPlayer;
 
@@ -222,7 +222,7 @@ class PlayerTurnWidget extends StatelessWidget {
 }
 
 class WinnerPlayerWidget extends StatelessWidget {
-  const WinnerPlayerWidget({required this.winner});
+  WinnerPlayerWidget({required this.winner});
 
   final Player winner;
 
@@ -250,10 +250,9 @@ class DrawWidget extends StatelessWidget {
 }
 
 class TicTacToeBox extends StatelessWidget {
-  const TicTacToeBox({
+  TicTacToeBox({
     required this.sign,
     required this.onTap,
-    super.key,
   });
 
   final String sign;
