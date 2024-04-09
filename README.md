@@ -1,16 +1,27 @@
 # flutter_tic_tac_toe
 
-A new Flutter project.
+Una board per giocare a Tris implementata in Flutter!
 
-## Getting Started
+## Tutorial Steps
 
-This project is a starting point for a Flutter application.
+Per seguire il tutorial è possibile fare riferimento ai diversi main presenti nella cartella `lib`.
 
-A few resources to get you started if this is your first Flutter project:
+* `main_00` - starting point del progetto
+  * TODO: mostrare chi deve giocare
+* `main_01`
+  * TODO: mostrare la board di gioco
+* `main_02`
+  * TODO: implementare un turno di gioco
+* `main_03`
+  * TODO: mostrare il vincitore!
+* `main_04`
+  * TODO: gestire il pareggio!
+* `main_05`
+  * TODO: nuova partita!
+* `main_06` - endpoint del tutorial
+  * **EXTRA TODO**: schermata introduttiva per selezionare i nomi dei giocatori con tema
+* `main_07` - esempio completo di schermata introduttiva e tema grafico
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
